@@ -1,6 +1,6 @@
 authors = ["Валерий Антонюк (antonyuk@physics.msu.ru)"]
 name = "MaxPlusAlgebra"
 uuid = "2351e69a-ea23-11eb-374d-172ea930e6cb"
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
