@@ -2,26 +2,26 @@ module MaxPlusAlgebra
 
 export ℝᵋ, ε, ⊕, ⊙
 
-struct ℝᵋ{T <: Real} <: Real
-    λ::T
+struct ℝᵋ <: Real
+    value::Float64
 end
 
-ℝᵋ(x::ℝᵋ) = ℝᵋ(x.λ)
+ℝᵋ(x::ℝᵋ) = ℝᵋ(x.value)
 
-const global ε = ℝᵋ(typemin(Float64))
+Base.max(x::ℝᵋ, y::ℝᵋ) = ℝᵋ(max(x.value, y.value))
+Base.:+(x::ℝᵋ, y::ℝᵋ) = ℝᵋ(x.value + y.value)
+Base.typemin(::Type{ℝᵋ}) = ℝᵋ(typemin(Float64))
 
-Base.convert(::Type{Real}, x::ℝᵋ) = x.λ
-Base.promote_rule(::Type{ℝᵋ{T}}, x::Type{T}) where {T<:Number} = ℝᵋ{T}(x)
-Base.typemin(::Type{ℝᵋ{T}}) where {T<:Number} = ℝᵋ(typemin(T))
+const global ε = typemin(ℝᵋ)
 
-⊙(x::ℝᵋ, y::ℝᵋ) = ((x == ε || y == ε) && return ε; ℝᵋ(x.λ+y.λ))
-⊙(x::Real, y::Real) = ℝᵋ(x+y)
+Base.promote_rule(::Type{ℝᵋ}, ::Type{T}) where {T<:Number} = ℝᵋ
+
+⊙(x::T, y::T) where {T<:Real} = x + y
 ⊙(x::Number, y::Number) = ⊙(promote(x,y)...)
 
-
-⊕(x::ℝᵋ, y::ℝᵋ) = ℝᵋ(max(x.λ, y.λ))
-⊕(x::Real, y::Real) = ℝᵋ(max(x,y))
+⊕(x::T, y::T) where {T<:Real} = max(x,y)
 ⊕(x::Number, y::Number) = ⊕(promote(x,y)...)
+
 
 ℝᵋ(A::Array) = map(ℝᵋ, A)
 
